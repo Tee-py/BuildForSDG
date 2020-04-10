@@ -65,13 +65,20 @@ def estimator(data):
           "currentlyInfected": impact_ci,
           "infectionsByRequestedTime": impact_ibrt,
           "severeCasesByRequestedTime": impact_scbrt,
-          "hospitalBedsByRequestedTime": impact_hbbrt
+          "hospitalBedsByRequestedTime": impact_hbbrt,
+          "casesForICUByRequestedTime": impact_icu,
+          "casesForVentilatorsByRequestedTime": impact_venti,
+          "dollarsInFlight": impact_dnflight,
+
         },
         "severeImpact": {
           "currentlyInfected": severe_ci,
           "infectionsByRequestedTime": severe_ibrt,
           "severeCasesByRequestedTime": severe_scbrt,
           "hospitalBedsByRequestedTime": severe_hbbrt,
+          "casesForICUByRequestedTime": severe_icu,
+          "casesForVentilatorsByRequestedTime": severe_venti,
+          "dollarsInFlight": severe_dnflight,
         }
     }
     #return the json format of the input data and python return data
@@ -84,4 +91,4 @@ def estimator(data):
 
 #shows the output on the console
 #test = estimator(json_str)
-#print(test['impact']['severeCasesByRequestedTime'])
+#print(test['impact']['dollarsInFlight'])
