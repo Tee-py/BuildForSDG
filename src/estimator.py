@@ -4,25 +4,25 @@ A nevelty COVID-19 Infections estimator function.
 
 def estimator(data):
 
-    import json
-    covid_data = json.loads(data)
+    #import json
+    #covid_data = json.loads(data)
 
     #calculations for the currentlyInfected property
-    impact_ci = covid_data['reportedCases']*10
-    severe_ci = covid_data['reportedCases']*50
+    impact_ci = data['reportedCases']*10
+    severe_ci = data['reportedCases']*50
 
     #calculations for the inFectedByRequestTime
-    if covid_data['periodType'] == 'days':
-        impact_ibrt = int(impact_ci*(2**int((covid_data['timeToElapse']/3))))
-        severe_ibrt = int(severe_ci*(2**int((covid_data['timeToElapse']/3))))
+    if data['periodType'] == 'days':
+        impact_ibrt = int(impact_ci*(2**int((data['timeToElapse']/3))))
+        severe_ibrt = int(severe_ci*(2**int((data['timeToElapse']/3))))
 
-    elif covid_data['periodType'] == 'weeks':
-        impact_ibrt = int(impact_ci*(2**int(((covid_data['timeToElapse']*7)/3))))
-        severe_ibrt = int(severe_ci*(2**int(((covid_data['timeToElapse']*7)/3))))
+    elif data['periodType'] == 'weeks':
+        impact_ibrt = int(impact_ci*(2**int(((data['timeToElapse']*7)/3))))
+        severe_ibrt = int(severe_ci*(2**int(((data['timeToElapse']*7)/3))))
 
-    elif covid_data['periodType'] == 'months':
-        impact_ibrt = int(impact_ci*(2**int(((covid_data['timeToElapse']*30)/3))))
-        severe_ibrt = int(severe_ci*(2**int(((covid_data['timeToElapse']*30)/3))))
+    elif data['periodType'] == 'months':
+        impact_ibrt = int(impact_ci*(2**int(((data['timeToElapse']*30)/3))))
+        severe_ibrt = int(severe_ci*(2**int(((data['timeToElapse']*30)/3))))
 
     """impact_scbrt = int(0.15*impact_ibrt)
     severe_scbrt = int(0.15*severe_ibrt)
@@ -60,12 +60,12 @@ def estimator(data):
       }
     }
     #return the json format of the input data and python return data
-    return covid_data, python_return_data
+    return python_return_data
 
 #edit this variable to change the input data
-json_str =  '{"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
+json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
             "periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"' \
-            ': 678874 }'
+            ': 678874 }
 
 #shows the output on the console
 import json
