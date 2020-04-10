@@ -7,11 +7,11 @@ def estimator(data):
         impact_ibrt = int(impact_ci*(2**int((covid_data['timeToElapse']/3))))
         severe_ibrt = int(severe_ci*(2**int((covid_data['timeToElapse']/3))))
     elif covid_data['periodType'] == 'weeks':
-        impact_ibrt = int(impact_ci*(2**int((covid_data['timeToElapse']*7/3))))
-        severe_ibrt = int(severe_ci*(2**int((covid_data['timeToElapse']*7/3))))
+        impact_ibrt = int(impact_ci*(2**int(((covid_data['timeToElapse']*7)/3))))
+        severe_ibrt = int(severe_ci*(2**int(((covid_data['timeToElapse']*7)/3))))
     elif covid_data['periodType'] == 'months':
-        impact_ibrt = int(impact_ci*(2**int((covid_data['timeToElapse']*30/3))))
-        severe_ibrt = int(severe_ci*(2**int((covid_data['timeToElapse']*30/3))))
+        impact_ibrt = int(impact_ci*(2**int(((covid_data['timeToElapse']*30)/3))))
+        severe_ibrt = int(severe_ci*(2**int(((covid_data['timeToElapse']*30)/3))))
     impact_scbrt = int(0.15*impact_ibrt)
     severe_scbrt = int(0.15*severe_ibrt)
     impact_hbbrt = int(0.35*covid_data['totalHospitalBeds']-impact_scbrt)
@@ -27,13 +27,12 @@ def estimator(data):
           'avgDailyIncomePopulation'])*covid_data['timeToElapse'])
     elif covid_data['periodType'] == 'weeks':
         impact_dnflight = int((impact_ibrt*covid_data['region']['avgDailyIncomeInUSD']*covid_data['region']['avgDailyIncomePopulation'])*(covid_data['timeToElapse']*7))
-        severe_dnflight = int((severe_ibrt* covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region']['avgDailyIncomePopulation'])*\
-        covid_data['timeToElapse'])
+        severe_dnflight = int((severe_ibrt* covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region']['avgDailyIncomePopulation'])*(covid_data['timeToElapse']*7))
     elif covid_data['periodType'] == 'months':
         impact_dnflight = int((impact_ibrt*covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region']['avgDailyIncomePopulation'])*\
                           (covid_data['timeToElapse']*30))
         severe_dnflight = int((severe_ibrt*covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region']['avgDailyIncomePopulation'])*\
-                          covid_data['timeToElapse'])
+                          covid_data['timeToElapse']*30)
     python_return_data = {
       "estimate": {
         "impact": {
