@@ -12,7 +12,7 @@ def estimator(data):
     elif covid_data['periodType'] == 'months':
         impact_ibrt = int(impact_ci*(2**int(((covid_data['timeToElapse']*30)/3))))
         severe_ibrt = int(severe_ci*(2**int(((covid_data['timeToElapse']*30)/3))))
-    impact_scbrt = int(0.15*impact_ibrt)
+    """impact_scbrt = int(0.15*impact_ibrt)
     severe_scbrt = int(0.15*severe_ibrt)
     impact_hbbrt = int(0.35*covid_data['totalHospitalBeds']-impact_scbrt)
     severe_hbbrt = int(0.35*covid_data['totalHospitalBeds']-severe_scbrt)
@@ -32,29 +32,18 @@ def estimator(data):
         impact_dnflight = int((impact_ibrt*covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region']['avgDailyIncomePopulation'])*\
                           (covid_data['timeToElapse']*30))
         severe_dnflight = int((severe_ibrt*covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region']['avgDailyIncomePopulation'])*\
-                          covid_data['timeToElapse']*30)
+                          covid_data['timeToElapse']*30)"""
     python_return_data = {
       "estimate": {
         "impact": {
           "currentlyInfected": impact_ci,
           "infectionsByRequestTime": impact_ibrt,
-          "severeCasesByRequestedTime": impact_scbrt,
-          "hospitalBedByRequestedTime": impact_hbbrt,
-          "casesForICUByRequestedTime": impact_icu,
-          "casesForVentilatorsByRequestedTime": impact_venti,
-          "dollarsInFlight": impact_dnflight,
         },
         "severeImpact": {
           "currentlyInfected": severe_ci,
           "infectionsByRequestTime": severe_ibrt,
-          "severeCasesByRequestedTime": severe_scbrt,
-          "hospitalBedByRequestedTime": severe_hbbrt,
-          "casesForICUByRequestedTime": severe_icu,
-          "casesForVentilatorsByRequestedTime": severe_venti,
-          "dollarsInFlight": severe_dnflight,
         }
       }
-
     }
 
 
