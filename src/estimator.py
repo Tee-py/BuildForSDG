@@ -48,6 +48,19 @@ def estimator(data):
 
     #The returned data
     python_return_data = {
+        "data": {
+            "region": {
+                "name": data['region']['name'],
+                "avgAge": data['region']['avgAge'],
+                "avgDailyIncomeInUSD": data['region']['avgDailyIncomeInUSD'],
+                "avgDailyIncomePopulation": data['region']['avgDailyIncomePopulation']
+            },
+            "periodType": data['periodType'],
+            "timeToElapse": data['timeToElapse'],
+            "reportedCases": data['reportedCases'],
+            "population": data['population'],
+            "totalHospitalBeds": data['totalHospitalBeds']
+        },
       "estimate": {
         "impact": {
           "currentlyInfected": impact_ci,
@@ -60,13 +73,13 @@ def estimator(data):
       }
     }
     #return the json format of the input data and python return data
-    return python_return_data
+    return data, python_return_data
 
 #edit this variable to change the input data
-json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
-            "periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"' \
-            ': 678874 }
+#json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
+            #"periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"\
+            #: 678874 }
 
 #shows the output on the console
-import json
-print(json.dumps(estimator(json_str)))
+#import json
+#print(json.dumps(estimator(json_str)))
