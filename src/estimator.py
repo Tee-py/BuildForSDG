@@ -73,7 +73,7 @@ def estimator(data):
       }
     }
     #return the json format of the input data and python return data
-    return data, python_return_data
+    return python_return_data
 
 #edit this variable to change the input data
 #json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
@@ -81,5 +81,5 @@ def estimator(data):
             #: 678874 }
 
 #shows the output on the console
-#import json
-#print(json.dumps(estimator(json_str)))
+#test = estimator(json_str)
+#print(test['estimate']['impact'])
