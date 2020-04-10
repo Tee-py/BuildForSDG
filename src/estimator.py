@@ -4,15 +4,15 @@ def estimator(data):
     impact_currently_infected = covid_data['reportedCases']*10
     severe_impact_curently_infected = covid_data['reportedCases']*50
     if covid_data['periodType'] == 'days':
-        impact_infections_by_request_time = int(impact_currently_infected*(2**(covid_data['timeToElapse']/3)))
-        severe_impact_infections_by_request_time = int(severe_impact_curently_infected*(2**(covid_data['timeToElapse']/3)))
+        impact_infections_by_request_time = int(impact_currently_infected*(2**int((covid_data['timeToElapse']/3))))
+        severe_impact_infections_by_request_time = int(severe_impact_curently_infected*(2**int((covid_data['timeToElapse']/3))))
     elif covid_data['periodType'] == 'weeks':
-        impact_infections_by_request_time = int(impact_currently_infected*(2**(covid_data['timeToElapse']*7/3)))
-        severe_impact_infections_by_request_time = int(severe_impact_curently_infected*(2**(covid_data['timeToElapse']*7/3)))
+        impact_infections_by_request_time = int(impact_currently_infected*(2**int((covid_data['timeToElapse']*7/3))))
+        severe_impact_infections_by_request_time = int(severe_impact_curently_infected*(2**int((covid_data['timeToElapse']*7/3))))
     elif covid_data['periodType'] == 'months':
-        impact_infections_by_request_time = int(impact_currently_infected*(2**(covid_data['timeToElapse']*30/3)))
-        severe_impact_infections_by_request_time=int(severe_impact_curently_infected*(2**(covid_data['timeToElapse']*30/3)))
-    impact_severe_cases_by_requested_time = int(15/100*impact_infections_by_request_time)
+        impact_infections_by_request_time = int(impact_currently_infected*(2**int((covid_data['timeToElapse']*30/3))))
+        severe_impact_infections_by_request_time=int(severe_impact_curently_infected*(2**int((covid_data['timeToElapse']*30/3))))
+    impact_severe_cases_by_requested_time = int(15/100*int(impact_infections_by_request_time))
     severe_impact_severe_cases_by_requested_time = int(15/100*severe_impact_infections_by_request_time)
     impact_hospital_bed_by_requested_time = covid_data['totalHospitalBeds'] - impact_severe_cases_by_requested_time
     severe_hospital_bed_by_requested_time = covid_data['totalHospitalBeds']-severe_impact_severe_cases_by_requested_time
@@ -64,6 +64,6 @@ def estimator(data):
 
 
     return json.dumps(python_return_data)
-json_str = '{"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 5, "avgDailyIncomePopulation": 0.71},\
-"periodType": "weeks", "timeToElapse": 5, "reportedCases": 674, "population": 66622705, "totalHospitalBeds": 1380614 }'
+json_str = '{"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
+"periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds": 678874 }'
 print(estimator(json_str))
