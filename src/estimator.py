@@ -1,17 +1,29 @@
+"""
+A nevelty COVID-19 Infections estimator function.
+"""
+
 def estimator(data):
+
     import json
     covid_data = json.loads(data)
+
+    #calculations for the currentlyInfected property
     impact_ci = covid_data['reportedCases']*10
     severe_ci = covid_data['reportedCases']*50
+
+    #calculations for the inFectedByRequestTime
     if covid_data['periodType'] == 'days':
         impact_ibrt = int(impact_ci*(2**int((covid_data['timeToElapse']/3))))
         severe_ibrt = int(severe_ci*(2**int((covid_data['timeToElapse']/3))))
+
     elif covid_data['periodType'] == 'weeks':
         impact_ibrt = int(impact_ci*(2**int(((covid_data['timeToElapse']*7)/3))))
         severe_ibrt = int(severe_ci*(2**int(((covid_data['timeToElapse']*7)/3))))
+
     elif covid_data['periodType'] == 'months':
         impact_ibrt = int(impact_ci*(2**int(((covid_data['timeToElapse']*30)/3))))
         severe_ibrt = int(severe_ci*(2**int(((covid_data['timeToElapse']*30)/3))))
+
     """impact_scbrt = int(0.15*impact_ibrt)
     severe_scbrt = int(0.15*severe_ibrt)
     impact_hbbrt = int(0.35*covid_data['totalHospitalBeds']-impact_scbrt)
@@ -33,6 +45,8 @@ def estimator(data):
                           (covid_data['timeToElapse']*30))
         severe_dnflight = int((severe_ibrt*covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region']['avgDailyIncomePopulation'])*\
                           covid_data['timeToElapse']*30)"""
+
+    #The returned data
     python_return_data = {
       "estimate": {
         "impact": {
@@ -45,9 +59,14 @@ def estimator(data):
         }
       }
     }
+    #return the json format of the input data and python return data
+    return covid_data, python_return_data
 
+#edit this variable to change the input data
+json_str =  '{"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
+            "periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"' \
+            ': 678874 }'
 
-    return covid_data, json.dumps(python_return_data)
-json_str = '{"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
-"periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds": 678874 }'
-print(estimator(json_str))
+#shows the output on the console
+import json
+print(json.dumps(estimator(json_str)))
