@@ -84,4 +84,4 @@ def estimator(data):
 
 #shows the output on the console
 #test = estimator(json_str)
-#print(test['impact']['infectionsByRequestedTime'])
+#print(test['impact']['severeCasesByRequestedTime'])
