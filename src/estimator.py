@@ -33,17 +33,17 @@ def estimator(data):
     impact_venti = int(0.02*impact_ibrt)
     severe_venti = int(0.02*severe_ibrt)
     if data['periodType'] == 'days':
-        impact_dnflight = int((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])*\
+        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])*\
                             data['timeToElapse'])
-        severe_dnflight = int((severe_ibrt*data['region']['avgDailyIncomeInUSD']*data['region'][
+        severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD']*data['region'][
           'avgDailyIncomePopulation'])*data['timeToElapse'])
     elif data['periodType'] == 'weeks':
-        impact_dnflight = int((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])*(data['timeToElapse']*7))
-        severe_dnflight = int((severe_ibrt* data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])*(data['timeToElapse']*7))
+        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])*(data['timeToElapse']*7))
+        severe_dnflight = ((severe_ibrt* data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])*(data['timeToElapse']*7))
     elif data['periodType'] == 'months':
-        impact_dnflight = int((impact_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])*\
+        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])*\
                           (data['timeToElapse']*30))
-        severe_dnflight = int((severe_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])*\
+        severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])*\
                           data['timeToElapse']*30)
 
     #The returned data
@@ -68,7 +68,7 @@ def estimator(data):
           "hospitalBedsByRequestedTime": impact_hbbrt,
           "casesForICUByRequestedTime": impact_icu,
           "casesForVentilatorsByRequestedTime": impact_venti,
-          "dollarsInFlight": impact_dnflight,
+          "dollarsInFlight": round(impact_dnflight,2),
 
         },
         "severeImpact": {
@@ -78,7 +78,7 @@ def estimator(data):
           "hospitalBedsByRequestedTime": severe_hbbrt,
           "casesForICUByRequestedTime": severe_icu,
           "casesForVentilatorsByRequestedTime": severe_venti,
-          "dollarsInFlight": severe_dnflight,
+          "dollarsInFlight": round(severe_dnflight,2),
         }
     }
     #return the json format of the input data and python return data
