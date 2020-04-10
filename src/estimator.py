@@ -61,7 +61,6 @@ def estimator(data):
             "population": data['population'],
             "totalHospitalBeds": data['totalHospitalBeds']
         },
-      "estimate": {
         "impact": {
           "currentlyInfected": impact_ci,
           "infectionsByRequestTime": impact_ibrt,
@@ -70,7 +69,6 @@ def estimator(data):
           "currentlyInfected": severe_ci,
           "infectionsByRequestTime": severe_ibrt,
         }
-      }
     }
     #return the json format of the input data and python return data
     return python_return_data
