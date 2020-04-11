@@ -68,7 +68,7 @@ def estimator(data):
           "hospitalBedsByRequestedTime": impact_hbbrt,
           "casesForICUByRequestedTime": impact_icu,
           "casesForVentilatorsByRequestedTime": impact_venti,
-          "dollarsInFlight": round(impact_dnflight,2),
+          "dollarsInFlight": int(impact_dnflight),
 
         },
         "severeImpact": {
@@ -78,17 +78,17 @@ def estimator(data):
           "hospitalBedsByRequestedTime": severe_hbbrt,
           "casesForICUByRequestedTime": severe_icu,
           "casesForVentilatorsByRequestedTime": severe_venti,
-          "dollarsInFlight": round(severe_dnflight,2),
+          "dollarsInFlight": int(severe_dnflight),
         }
     }
     #return the json format of the input data and python return data
     return python_return_data
 
 #edit this variable to change the input data
-#json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
-            #"periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"\
-            #: 678874 }
+json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
+            "periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"\
+            : 678874 }
 
 #shows the output on the console
-#test = estimator(json_str)
-#print(test['impact']['dollarsInFlight'])
+test = estimator(json_str)
+print(test['impact']['casesForVentilatorsByRequestedTime'])
