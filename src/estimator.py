@@ -1,96 +1,68 @@
-"""
-A nevelty COVID-19 Infections estimator function.
-"""
-
 def estimator(data):
+    import json
+    covid_data = json.loads(data)
+    impact_currently_infected = covid_data['reportedCases']*10
+    severe_impact_curently_infected = covid_data['reportedCases']*50
+    if covid_data['periodType'] == 'days':
+        impact_infections_by_request_time = int(impact_currently_infected*(2**(covid_data['timeToElapse']/3)))
+        severe_impact_infections_by_request_time = int(severe_impact_curently_infected*(2**(covid_data['timeToElapse']/3)))
+    elif covid_data['periodType'] == 'weeks':
+        impact_infections_by_request_time = int(impact_currently_infected*(2**(covid_data['timeToElapse']*7/3)))
+        severe_impact_infections_by_request_time = int(severe_impact_curently_infected*(2**(covid_data['timeToElapse']*7/3)))
+    elif covid_data['periodType'] == 'months':
+        impact_infections_by_request_time = int(impact_currently_infected*(2**(covid_data['timeToElapse']*30/3)))
+        severe_impact_infections_by_request_time=int(severe_impact_curently_infected*(2**(covid_data['timeToElapse']*30/3)))
 
-    #import json
-    #covid_data = json.loads(data)
-
-    #calculations for the currentlyInfected property
-    impact_ci = data['reportedCases']*10
-    severe_ci = data['reportedCases']*50
-
-    #calculations for the inFectedByRequestTime
-    if data['periodType'] == 'days':
-        impact_ibrt = int(impact_ci*(2**int((data['timeToElapse']/3))))
-        severe_ibrt = int(severe_ci*(2**int((data['timeToElapse']/3))))
-
-    elif data['periodType'] == 'weeks':
-        impact_ibrt = int(impact_ci*(2**int(((data['timeToElapse']*7)/3))))
-        severe_ibrt = int(severe_ci*(2**int(((data['timeToElapse']*7)/3))))
-
-    elif data['periodType'] == 'months':
-        impact_ibrt = int(impact_ci*(2**int(((data['timeToElapse']*30)/3))))
-        severe_ibrt = int(severe_ci*(2**int(((data['timeToElapse']*30)/3))))
-
-    impact_scbrt = int(0.15*impact_ibrt)
-    severe_scbrt = int(0.15*severe_ibrt)
-    impact_hbbrt = int(0.35*data['totalHospitalBeds']-impact_scbrt)
-    severe_hbbrt = int(0.35*data['totalHospitalBeds']-severe_scbrt)
-    impact_icu = int(0.05*impact_ibrt)
-    severe_icu = int(0.05*severe_ibrt)
-    impact_venti = int(0.02*impact_ibrt)
-    severe_venti = int(0.02*severe_ibrt)
-    if data['periodType'] == 'days':
-        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])/\
-                            data['timeToElapse'])
-        severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD']*data['region'][
-          'avgDailyIncomePopulation'])*data['timeToElapse'])
-    elif data['periodType'] == 'weeks':
-        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])/(data['timeToElapse']*7))
-        severe_dnflight = ((severe_ibrt* data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])/(data['timeToElapse']*7))
-    elif data['periodType'] == 'months':
-        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])/\
-                          (data['timeToElapse']*30))
-        severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])/\
-                          data['timeToElapse']*30)
-
-    #The returned data
+    impact_severe_cases_by_requested_time = int(15/100*impact_infections_by_request_time)
+    severe_impact_severe_cases_by_requested_time = int(15/100*severe_impact_infections_by_request_time)
+    impact_hospital_bed_by_requested_time = covid_data['totalHospitalBeds'] - impact_severe_cases_by_requested_time
+    severe_hospital_bed_by_requested_time = covid_data['totalHospitalBeds']-severe_impact_severe_cases_by_requested_time
+    impact_icu = 5/100*impact_infections_by_request_time
+    severe_icu = 5/100*severe_impact_infections_by_request_time
+    impact_venti = 2/100*impact_infections_by_request_time
+    severe_venti = 2/100*severe_impact_infections_by_request_time
+    if covid_data['periodType'] == 'days':
+        impact_dnflight = int((impact_infections_by_request_time*covid_data['region']['avgDailyIncomeInUSD']*covid_data['region']['avgDailyIncomePopulation'])/\
+                            covid_data['timeToElapse'])
+        severe_dnflight = int((severe_impact_infections_by_request_time * covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region'][
+          'avgDailyIncomePopulation']) / \
+                              covid_data['timeToElapse'])
+    elif covid_data['periodType'] == 'weeks':
+        impact_dnflight = int((impact_infections_by_request_time*covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region']['avgDailyIncomePopulation']) / \
+                          (covid_data['timeToElapse']*7))
+        severe_dnflight = int(
+          (severe_impact_infections_by_request_time * covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region'][
+            'avgDailyIncomePopulation']) / \
+          covid_data['timeToElapse'])
+    elif covid_data['periodType'] == 'months':
+        impact_dnflight = int((impact_infections_by_request_time*covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region']['avgDailyIncomePopulation']) / \
+                          (covid_data['timeToElapse']*30))
+        severe_dnflight = int((severe_impact_infections_by_request_time * covid_data['region']['avgDailyIncomeInUSD'] * covid_data['region']['avgDailyIncomePopulation']) / \
+                          covid_data['timeToElapse'])
     python_return_data = {
-        "data": {
-            "region": {
-                "name": data['region']['name'],
-                "avgAge": data['region']['avgAge'],
-                "avgDailyIncomeInUSD": data['region']['avgDailyIncomeInUSD'],
-                "avgDailyIncomePopulation": data['region']['avgDailyIncomePopulation']
-            },
-            "periodType": data['periodType'],
-            "timeToElapse": data['timeToElapse'],
-            "reportedCases": data['reportedCases'],
-            "population": data['population'],
-            "totalHospitalBeds": data['totalHospitalBeds']
-        },
-        "impact": {
-          "currentlyInfected": impact_ci,
-          "infectionsByRequestedTime": impact_ibrt,
-          "severeCasesByRequestedTime": impact_scbrt,
-          "hospitalBedsByRequestedTime": impact_hbbrt,
-          "casesForICUByRequestedTime": impact_icu,
-          "casesForVentilatorsByRequestedTime": impact_venti,
-          "dollarsInFlight": int(impact_dnflight),
-
-        },
-        "severeImpact": {
-          "currentlyInfected": severe_ci,
-          "infectionsByRequestedTime": severe_ibrt,
-          "severeCasesByRequestedTime": severe_scbrt,
-          "hospitalBedsByRequestedTime": severe_hbbrt,
-          "casesForICUByRequestedTime": severe_icu,
-          "casesForVentilatorsByRequestedTime": severe_venti,
-          "dollarsInFlight": int(severe_dnflight),
-        }
+      "impact": {
+        "currentlyInfected": impact_currently_infected,
+        "infectionsByRequestTime": impact_infections_by_request_time,
+        "severeCasesByRequestedTime": impact_severe_cases_by_requested_time,
+        "hospitalBedByRequestedTime": impact_hospital_bed_by_requested_time,
+        "casesForICUByRequestedTime": impact_icu,
+        "casesForVentilatorsByRequestedTime": impact_venti,
+        "dollarsInFlight": impact_dnflight,
+      },
+      "severeImpact": {
+        "currentlyInfected": severe_impact_curently_infected,
+        "infectionsByRequestTime": severe_impact_infections_by_request_time,
+        "severeCasesByRequestedTime": severe_impact_severe_cases_by_requested_time,
+        "hospitalBedByRequestedTime": severe_hospital_bed_by_requested_time,
+        "casesForICUByRequestedTime": severe_icu,
+        "casesForVentilatorsByRequestedTime": severe_venti,
+        "dollarsInFlight": severe_dnflight,
+      }
     }
-    #return the json format of the input data and python return data
-    return python_return_data
 
-#edit this variable to change the input data
-#json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
-            #"periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"\
-            #: 678874 }
 
-#shows the output on the console
-#test = estimator(json_str)
-#covid_file = open('COVID_DATA.txt','w')
-#covid_file.write(str(test))
-#covid_file.close()
+    return json.dumps(python_return_data)
+json_str = '{"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 5, "avgDailyIncomePopulation": 0.71}, "periodType": "days", "timeToElapse": 58, "reportedCases": 674, "population": 66622705, "totalHospitalBeds": 1380614 }'
+json_str = '{"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 5, "avgDailyIncomePopulation": 0.71},\
+"periodType": "weeks", "timeToElapse": 5, "reportedCases": 674, "population": 66622705, "totalHospitalBeds": 1380614 }'
+print(estimator(json_str))
