@@ -33,17 +33,17 @@ def estimator(data):
     impact_venti = int(0.02*impact_ibrt)
     severe_venti = int(0.02*severe_ibrt)
     if data['periodType'] == 'days':
-        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])*\
+        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])/\
                             data['timeToElapse'])
         severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD']*data['region'][
           'avgDailyIncomePopulation'])*data['timeToElapse'])
     elif data['periodType'] == 'weeks':
-        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])*(data['timeToElapse']*7))
-        severe_dnflight = ((severe_ibrt* data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])*(data['timeToElapse']*7))
+        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])/(data['timeToElapse']*7))
+        severe_dnflight = ((severe_ibrt* data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])/(data['timeToElapse']*7))
     elif data['periodType'] == 'months':
-        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])*\
+        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])/\
                           (data['timeToElapse']*30))
-        severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])*\
+        severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])/\
                           data['timeToElapse']*30)
 
     #The returned data
@@ -85,10 +85,12 @@ def estimator(data):
     return python_return_data
 
 #edit this variable to change the input data
-#json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
-            #"periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"\
-            #: 678874 }
+json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
+            "periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"\
+            : 678874 }
 
 #shows the output on the console
-#test = estimator(json_str)
-#print(test['impact']['casesForVentilatorsByRequestedTime'])
+test = estimator(json_str)
+covid_file = open('COVID_DATA.txt','w')
+covid_file.write(str(test))
+covid_file.close()
