@@ -36,23 +36,23 @@ def estimator(data):
 
     if data['periodType'] == 'days':
         impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']\
-        ['avgDailyIncomePopulation'])*data['timeToElapse'])
+        ['avgDailyIncomePopulation'])/data['timeToElapse'])
         severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD']*data['region'][\
-        'avgDailyIncomePopulation'])*data['timeToElapse'])
+        'avgDailyIncomePopulation'])/data['timeToElapse'])
 
     elif data['periodType'] == 'weeks':
         denum_var = data['timeToElapse']*7
         impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']\
-        ['avgDailyIncomePopulation'])*denum_var)
+        ['avgDailyIncomePopulation'])/denum_var)
         severe_dnflight = ((severe_ibrt* data['region']['avgDailyIncomeInUSD'] * data['region']\
-        ['avgDailyIncomePopulation'])*denum_var)
+        ['avgDailyIncomePopulation'])/denum_var)
 
     elif data['periodType'] == 'months':
         denum_var = data['timeToElapse']*30
         impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']\
-        ['avgDailyIncomePopulation'])*denum_var)
+        ['avgDailyIncomePopulation'])/denum_var)
         severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']\
-        ['avgDailyIncomePopulation'])*denum_var)
+        ['avgDailyIncomePopulation'])/denum_var)
 
     #The returned data
     python_return_data = {
