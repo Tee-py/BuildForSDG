@@ -1,0 +1,1 @@
+{'periodType': 'days', 'population': 8916924, 'region': {'avgAge': 19.7, 'avgDailyIncomeInUSD': 2, 'avgDailyIncomePopulation': 0.7, 'name': 'Africa'}, 'reportedCases': 1319, 'timeToElapse': 38, 'totalHospitalBeds': 678874}

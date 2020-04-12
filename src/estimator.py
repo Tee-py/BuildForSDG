@@ -87,14 +87,14 @@ def estimator(data):
     return python_return_data
 
 #edit this variable to change the input data
-#s = {'periodType': 'days', 'population': 8916924, 'region': {'avgAge': 19.7, 'avgDailyIncomeInUSD': 2, 'avgDailyIncomePopulation': 0.7, 'name': 'Africa'}, 'reportedCases': 1319, "totalHospitalBeds": 678874}
+s = {'periodType': 'days', 'population': 8916924, 'region': {'avgAge': 19.7, 'avgDailyIncomeInUSD': 2, 'avgDailyIncomePopulation': 0.7, 'name': 'Africa'}, 'reportedCases': 1319, "timeToElapse": 38, "totalHospitalBeds": 678874}
 #json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
             #"periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"\
             #: 678874 }
 
 #shows the output on the console
-#test = estimator(s)
-#print(test)
+test = estimator(s)
+print(test)
 #covid_file = open('COVID_DATA.txt','w')
 #covid_file.write(str(test))
 #covid_file.close()
