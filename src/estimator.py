@@ -6,9 +6,6 @@ def estimator(data):
 
     #import json
     #covid_data = json.loads(data)
-    covid_file = open('COVID_DATA.txt', 'w')
-    covid_file.write(str(data))
-    covid_file.close()
     #calculations for the currentlyInfected property
     impact_ci = data['reportedCases']*10
     severe_ci = data['reportedCases']*50
@@ -19,12 +16,14 @@ def estimator(data):
         severe_ibrt = int(severe_ci*(2**int((data['timeToElapse']/3))))
 
     elif data['periodType'] == 'weeks':
-        impact_ibrt = int(impact_ci*(2**int(((data['timeToElapse']*7)/3))))
-        severe_ibrt = int(severe_ci*(2**int(((data['timeToElapse']*7)/3))))
+        factor = int((data['timeToElapse']*7)/3)
+        impact_ibrt = int(impact_ci*(2**factor))
+        severe_ibrt = int(severe_ci*(2**factor))
 
     elif data['periodType'] == 'months':
-        impact_ibrt = int(impact_ci*(2**int(((data['timeToElapse']*30)/3))))
-        severe_ibrt = int(severe_ci*(2**int(((data['timeToElapse']*30)/3))))
+        factor = int((data['timeToElapse']*30)/3)
+        impact_ibrt = int(impact_ci*(2**factor))
+        severe_ibrt = int(severe_ci*(2**factor))
 
     impact_scbrt = int(0.15*impact_ibrt)
     severe_scbrt = int(0.15*severe_ibrt)
@@ -34,19 +33,26 @@ def estimator(data):
     severe_icu = int(0.05*severe_ibrt)
     impact_venti = int(0.02*impact_ibrt)
     severe_venti = int(0.02*severe_ibrt)
+
     if data['periodType'] == 'days':
-        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])/\
-                            data['timeToElapse'])
-        severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD']*data['region'][
-          'avgDailyIncomePopulation'])*data['timeToElapse'])
+        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']\
+        ['avgDailyIncomePopulation'])*data['timeToElapse'])
+        severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD']*data['region'][\
+        'avgDailyIncomePopulation'])*data['timeToElapse'])
+
     elif data['periodType'] == 'weeks':
-        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']['avgDailyIncomePopulation'])/(data['timeToElapse']*7))
-        severe_dnflight = ((severe_ibrt* data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])/(data['timeToElapse']*7))
+        denum_var = data['timeToElapse']*7
+        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD']*data['region']\
+        ['avgDailyIncomePopulation'])*denum_var)
+        severe_dnflight = ((severe_ibrt* data['region']['avgDailyIncomeInUSD'] * data['region']\
+        ['avgDailyIncomePopulation'])*denum_var)
+
     elif data['periodType'] == 'months':
-        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])/\
-                          (data['timeToElapse']*30))
-        severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']['avgDailyIncomePopulation'])/\
-                          data['timeToElapse']*30)
+        denum_var = data['timeToElapse']*30
+        impact_dnflight = ((impact_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']\
+        ['avgDailyIncomePopulation'])*denum_var)
+        severe_dnflight = ((severe_ibrt*data['region']['avgDailyIncomeInUSD'] * data['region']\
+        ['avgDailyIncomePopulation'])*denum_var)
 
     #The returned data
     python_return_data = {
@@ -86,15 +92,17 @@ def estimator(data):
     #return the json format of the input data and python return data
     return python_return_data
 
+
+
 #edit this variable to change the input data
-s = {'periodType': 'days', 'population': 8916924, 'region': {'avgAge': 19.7, 'avgDailyIncomeInUSD': 2, 'avgDailyIncomePopulation': 0.7, 'name': 'Africa'}, 'reportedCases': 1319, "timeToElapse": 38, "totalHospitalBeds": 678874}
+#s = {'periodType': 'months', 'population': 8916924, 'region': {'avgAge': 19.7, 'avgDailyIncomeInUSD': 2, 'avgDailyIncomePopulation': 0.7, 'name': 'Africa'}, 'reportedCases': 1319, "timeToElapse": 3, "totalHospitalBeds": 678874}
 #json_str =  {"region": {"name": "Africa", "avgAge": 19.7, "avgDailyIncomeInUSD": 4, "avgDailyIncomePopulation": 0.73},\
             #"periodType": "days", "timeToElapse": 38, "reportedCases": 2747, "population": 92931687, "totalHospitalBeds"\
             #: 678874 }
 
 #shows the output on the console
-test = estimator(s)
-print(test)
+#test = estimator(json_str)
+#print(test)
 #covid_file = open('COVID_DATA.txt','w')
 #covid_file.write(str(test))
 #covid_file.close()
