@@ -4,8 +4,6 @@ A nevelty COVID-19 Infections estimator function.
 
 def estimator(data):
 
-    #import json
-    #covid_data = json.loads(data)
     #calculations for the currentlyInfected property
     impact_ci = data['reportedCases']*10
     severe_ci = data['reportedCases']*50
