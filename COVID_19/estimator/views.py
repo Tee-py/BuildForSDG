@@ -1,5 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import Log
+
 
 def estimator(data):
 
@@ -97,20 +100,50 @@ def home(request):
     response = json.dumps({})
     return HttpResponse(response, content_type='text/json')
 
+@csrf_exempt
 def endpoint(request):
     import json
     if request.method == 'POST':
-        data = request.POST
-        response = json.dumps(estimator(data))
+        data = request.body
+        response = json.dumps(estimator(json.loads(data)))
     else:
         response = json.dumps({})
     return HttpResponse(response, content_type='text/json')
 
+@csrf_exempt
 def xml(request):
-    return render(request, "xml.html")
 
+    if request.method == 'POST':
+        import dicttoxml
+        import json
+        data = request.body
+        response = dicttoxml.dicttoxml(estimator(json.loads(data)))
+    else:
+        import dicttoxml
+        response = dicttoxml.dicttoxml({})
+    return HttpResponse(response, content_type='application/xml')
+
+@csrf_exempt
 def json(request):
-    return render(request, "json.html")
+    import time
+    start = time.time()
+    import json
+    if request.method == 'POST':
+        data = request.body
+        response = json.dumps(estimator(json.loads(data)))
+    else:
+        response = json.dumps({})
+    end = time.time()
+    res_time = end - start
+    new_log = Log(request_method=request.method, status_code=200, path='/api/v1/on-covid-19/json', response_time= \
+        res_time, time_unit='ms')
+    new_log.save()
+    print(start)
+    print(end)
+    print(res_time)
+    return HttpResponse(response, content_type='text/json')
+
 
 def logs(request):
-    return render(request, "logs.html")
+    all_logs = Log.objects.all()
+    return render(request, 'logs.html', {'all_logs': all_logs})

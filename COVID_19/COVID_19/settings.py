@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'estimator',
     'rest_framework',
+    'rest_framework_xml',
+    'dicttoxml',
+
 ]
 
 MIDDLEWARE = [
@@ -120,3 +123,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [],
+    'DEFAULT_PARSER_CLASSES': [
+    'rest_framework_xml.parsers.XMLParser',
+  ],
+    'DEFAULT_RENDERER_CLASSES': [
+    'rest_framework_xml.renderers.XMLRenderer',
+  ],
+}
