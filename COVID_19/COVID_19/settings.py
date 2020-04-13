@@ -132,3 +132,4 @@ REST_FRAMEWORK = {
     'rest_framework_xml.renderers.XMLRenderer',
   ],
 }
+
