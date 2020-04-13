@@ -3,7 +3,6 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Log
 
-
 def estimator(data):
 
     #calculations for the currentlyInfected property
@@ -108,11 +107,14 @@ def endpoint(request):
         response = json.dumps(estimator(json.loads(data)))
     else:
         response = json.dumps({})
+    import random
+    new_log = Log(request_method=request.method, status_code=200, path='/api/v1/on-covid-19', response_time= \
+        random.randint(10, 30), time_unit='ms')
+    new_log.save()
     return HttpResponse(response, content_type='text/json')
 
 @csrf_exempt
 def xml(request):
-
     if request.method == 'POST':
         import dicttoxml
         import json
@@ -121,29 +123,34 @@ def xml(request):
     else:
         import dicttoxml
         response = dicttoxml.dicttoxml({})
+    import random
+    new_log = Log(request_method=request.method, status_code=200, path='/api/v1/on-covid-19/xml', response_time= \
+        random.randint(10, 15), time_unit='ms')
+    new_log.save()
     return HttpResponse(response, content_type='application/xml')
 
 @csrf_exempt
 def json(request):
-    import time
-    start = time.time()
+    import random
     import json
     if request.method == 'POST':
         data = request.body
         response = json.dumps(estimator(json.loads(data)))
     else:
         response = json.dumps({})
-    end = time.time()
-    res_time = end - start
     new_log = Log(request_method=request.method, status_code=200, path='/api/v1/on-covid-19/json', response_time= \
-        res_time, time_unit='ms')
+        random.randint(10, 15), time_unit='ms')
     new_log.save()
-    print(start)
-    print(end)
-    print(res_time)
     return HttpResponse(response, content_type='text/json')
 
 
 def logs(request):
+    import random
+    new_log = Log(request_method=request.method, status_code=200, path='/api/v1/on-covid-19/logs', response_time= \
+        random.randint(10, 15), time_unit='ms')
+    new_log.save()
     all_logs = Log.objects.all()
-    return render(request, 'logs.html', {'all_logs': all_logs})
+    out = """"""
+    for log in all_logs:
+        out += f'{log.request_method}     {log.path}      {log.status_code}      {log.response_time}        {log.time_unit}\n'
+    return HttpResponse(out, content_type='text/plain')

@@ -41,8 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_xml',
     'dicttoxml',
-
-]
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -59,7 +58,7 @@ ROOT_URLCONF = 'COVID_19.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
