@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Log
 
@@ -140,7 +140,7 @@ def json(request):
     new_log = Log(request_method=request.method, status_code=200, path='/api/v1/on-covid-19/json', response_time= \
         random.randint(10, 15), time_unit='ms')
     new_log.save()
-    return HttpResponse(response, content_type='text/json')
+    return JsonResponse(response, content_type='application/json', safe=False)
 
 
 def logs(request):
