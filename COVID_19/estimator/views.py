@@ -133,8 +133,8 @@ def json(request):
     import random
     import json
     if request.method == 'POST':
-        data = json.loads(request.body)
-        response = json.dumps(estimator(data))
+        covid = json.loads(request.body)
+        response = json.dumps(estimator(covid))
     else:
         response = json.dumps({})
     new_log = Log(request_method=request.method, status_code=200, path='/api/v1/on-covid-19/json', response_time= \
@@ -144,12 +144,8 @@ def json(request):
 
 
 def logs(request):
-    import random
-    new_log = Log(request_method=request.method, status_code=200, path='/api/v1/on-covid-19/logs', response_time= \
-        random.randint(10, 15), time_unit='ms')
-    new_log.save()
     all_logs = Log.objects.all()
     out = """"""
     for log in all_logs:
-        out += f'{log.request_method}     {log.path}      {log.status_code}      {log.response_time}        {log.time_unit}\n'
+        out += f'{log.request_method}\t{log.path:}\t{log.status_code:>15}\t{log.response_time:>15}{log.time_unit}\n'
     return HttpResponse(out, content_type='text/plain')
