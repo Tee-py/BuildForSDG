@@ -4,7 +4,6 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Log
 
 def estimator(data):
-
     #calculations for the currentlyInfected property
     impact_ci = data['reportedCases']*10
     severe_ci = data['reportedCases']*50
@@ -103,8 +102,8 @@ def home(request):
 def endpoint(request):
     import json
     if request.method == 'POST':
-        data = request.body
-        response = json.dumps(estimator(json.loads(data)))
+        data = json.loads(request.body)
+        response = json.dumps(estimator(data))
     else:
         response = json.dumps({})
     import random
@@ -118,8 +117,8 @@ def xml(request):
     if request.method == 'POST':
         import dicttoxml
         import json
-        data = request.body
-        response = dicttoxml.dicttoxml(estimator(json.loads(data)))
+        data = json.loads(request.body)
+        response = dicttoxml.dicttoxml(estimator(data))
     else:
         import dicttoxml
         response = dicttoxml.dicttoxml({})
@@ -134,8 +133,8 @@ def json(request):
     import random
     import json
     if request.method == 'POST':
-        data = request.body
-        response = json.dumps(estimator(json.loads(data)))
+        data = json.loads(request.body)
+        response = json.dumps(estimator(data))
     else:
         response = json.dumps({})
     new_log = Log(request_method=request.method, status_code=200, path='/api/v1/on-covid-19/json', response_time= \
